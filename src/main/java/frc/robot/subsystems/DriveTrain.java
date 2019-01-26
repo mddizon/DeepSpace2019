@@ -8,15 +8,15 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.CAN;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveCommand;
 
@@ -27,26 +27,36 @@ public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private Victor frontLeftVictor;
-  private Victor backLeftVictor;
-  private WPI_VictorSPX frontRightVictor;
-  private WPI_VictorSPX backRightVictor;
+  private WPI_VictorSPX frontLeftVictor;
+  private WPI_VictorSPX backLeftVictor;
+  private Victor frontRightVictor;
+  private Victor backRightVictor;
   private MecanumDrive drive;
+  private AHRS gyro;
 
   public DriveTrain() {
-    frontLeftVictor = new Victor(RobotMap.frontLeftMotor);
-    backLeftVictor = new Victor(RobotMap.backLeftMotor);
-    frontRightVictor = new WPI_VictorSPX(RobotMap.frontRightMotor);
-    backRightVictor = new WPI_VictorSPX(RobotMap.backRightMotor);
+    frontLeftVictor = new WPI_VictorSPX(RobotMap.frontLeftMotor);
+    backLeftVictor = new WPI_VictorSPX(RobotMap.backLeftMotor);
+    frontRightVictor = new Victor(RobotMap.frontRightMotor);
+    backRightVictor = new Victor(RobotMap.backRightMotor);
+    gyro = new AHRS(Port.kUSB);
     drive = new MecanumDrive(frontLeftVictor, backLeftVictor, frontRightVictor, backRightVictor);
+    drive.setDeadband(0.1);
   }
-
+  
   public void move(XboxController controller) {
-    drive.driveCartesian(controller.getX(Hand.kLeft), controller.getY(Hand.kLeft), controller.getX(Hand.kRight));
+    SmartDashboard.putNumber("gyro", gyro.getYaw());
+    SmartDashboard.putNumber("X", controller.getX(Hand.kLeft));
+    SmartDashboard.putNumber("Y", controller.getY(Hand.kLeft));
+    SmartDashboard.putNumber("Z", controller.getX(Hand.kRight));
+    if (controller.getAButton()) {
+      gyro.reset();
+    }
+    drive.driveCartesian(controller.getX(Hand.kLeft), -controller.getY(Hand.kLeft), controller.getX(Hand.kRight), gyro.getAngle());
   }
 
   public void stop() {
-    drive.driveCartesian(0, 0, 0);
+    drive.stopMotor();
   }
 
   @Override
