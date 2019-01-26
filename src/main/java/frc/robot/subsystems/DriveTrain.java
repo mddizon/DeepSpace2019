@@ -7,11 +7,18 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.RobotMap;
+import frc.robot.commands.DriveCommand;
 
 /**
  * Add your docs here.
@@ -20,27 +27,32 @@ public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private Spark leftSpark;
-  private Spark rightSpark;
-  private DifferentialDrive drive;
+  private Victor frontLeftVictor;
+  private Victor backLeftVictor;
+  private WPI_VictorSPX frontRightVictor;
+  private WPI_VictorSPX backRightVictor;
+  private MecanumDrive drive;
 
   public DriveTrain() {
-    leftSpark = new Spark(RobotMap.leftMotor);
-    rightSpark = new Spark(RobotMap.rightMotor);
-    drive = new DifferentialDrive(leftSpark, rightSpark);
+    frontLeftVictor = new Victor(RobotMap.frontLeftMotor);
+    backLeftVictor = new Victor(RobotMap.backLeftMotor);
+    frontRightVictor = new WPI_VictorSPX(RobotMap.frontRightMotor);
+    backRightVictor = new WPI_VictorSPX(RobotMap.backRightMotor);
+    drive = new MecanumDrive(frontLeftVictor, backLeftVictor, frontRightVictor, backRightVictor);
   }
 
   public void move(XboxController controller) {
-    drive.arcadeDrive(controller.getX(), controller.getY());
+    drive.driveCartesian(controller.getX(Hand.kLeft), controller.getY(Hand.kLeft), controller.getX(Hand.kRight));
   }
 
   public void stop() {
-    drive.arcadeDrive(0, 0);
+    drive.driveCartesian(0, 0, 0);
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new DriveCommand());
   }
 }
