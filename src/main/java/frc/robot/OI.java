@@ -8,6 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+//import frc.robot.commands.SolenoidRetract;
+//import frc.robot.commands.SolenoidExtend;
+import frc.robot.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -22,9 +27,19 @@ public class OI {
   // Joystick stick = new Joystick(port);
   // Button button = new JoystickButton(stick, buttonNumber);
   private XboxController controller;
+  private Button bA;
+  private Button bB;
+  private Button bC;
 
   public OI() {
     controller = new XboxController(0);
+    bA = new JoystickButton(controller, 0);
+    bB = new JoystickButton(controller, 1);
+    bC = new JoystickButton(controller, 2);
+    bA.whenPressed(new SolenoidExtend());
+    bB.whenPressed(new SolenoidRetract());
+    bC.whenPressed(new CargoTakeIn());
+    bC.whenReleased(new CargoOff());
   }
 
   public XboxController getController() {

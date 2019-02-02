@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveCommand;
 
+
 /**
  * Add your docs here.
  */
@@ -52,7 +53,14 @@ public class DriveTrain extends Subsystem {
     if (controller.getAButton()) {
       gyro.reset();
     }
+    if(controller.getBButton()) {
+      SmartDashboard.putString("lkhfalhflhkahjlasflhlhkaflhkaklaskjlfasklasfljk", "bjaskjasjhlasdlhjdsajhashjkhaksjuiqiuqkhebnbn");
+    }
     drive.driveCartesian(controller.getX(Hand.kLeft), -controller.getY(Hand.kLeft), controller.getX(Hand.kRight), gyro.getAngle());
+  }
+
+  public double decimalPlace(double num, int place) {
+    return (((double)((int)(num*place)))/place);
   }
 
   public void stop() {

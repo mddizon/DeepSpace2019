@@ -12,7 +12,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.CargoShooter;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.HatchMechanism;
+import edu.wpi.first.wpilibj.RobotBase;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +28,8 @@ import frc.robot.subsystems.DriveTrain;
 public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static OI m_oi;
+  public static HatchMechanism hatchMechanism;
+  public static CargoShooter cargoShooter;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -36,6 +42,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     driveTrain = new DriveTrain();
     m_oi = new OI();
+    hatchMechanism = new HatchMechanism();
+    cargoShooter = new CargoShooter();
     SmartDashboard.putString("Test", "Hello!");
     SmartDashboard.putData("Auto mode", m_chooser);
   }
