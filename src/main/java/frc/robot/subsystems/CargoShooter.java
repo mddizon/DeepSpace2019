@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.CargoOff;
@@ -18,10 +18,10 @@ import frc.robot.commands.CargoOff;
 public class CargoShooter extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private PWM cargoMotor;
+  private Spark cargoMotor;
 
   public CargoShooter() {
-    cargoMotor = new PWM(RobotMap.cargoMotor);
+    cargoMotor = new Spark(RobotMap.cargoMotor);
   }
 
   public void shoot() {

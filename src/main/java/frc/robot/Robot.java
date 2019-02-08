@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.CargoShooter;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchMechanism;
-import edu.wpi.first.wpilibj.RobotBase;
 
 
 /**
@@ -41,9 +40,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveTrain = new DriveTrain();
-    m_oi = new OI();
     hatchMechanism = new HatchMechanism();
     cargoShooter = new CargoShooter();
+
+    m_oi = new OI();
     SmartDashboard.putString("Test", "Hello!");
     SmartDashboard.putData("Auto mode", m_chooser);
   }
