@@ -36,8 +36,8 @@ public class RobotMap {
   public static final int pot = 0;
   public static final int wrist = 5;
 
-  public static final int distanceHatch = 1;
-  public static final int distanceCargo = 0;
+  public static final int distanceHatch = 0;
+  public static final int distanceCargo = 1;
   public static final int backLinesensor = 3;
   public static final int frontLinesensor = 2;
   // If you are using multiple modules, make sure to define both the port

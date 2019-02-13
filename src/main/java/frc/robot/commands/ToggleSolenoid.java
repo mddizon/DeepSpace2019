@@ -8,26 +8,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class SwitchDirection extends Command {
-  public SwitchDirection() {
+public class ToggleSolenoid extends Command {
+  private boolean isExtended;
+
+  public ToggleSolenoid() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.hatchMechanism);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.isForward = !Robot.isForward;
-    SmartDashboard.putString("Direction", Robot.isForward ? "Facing Hatch" : "Facing Cargo");
+    isExtended = Robot.isExtended;
+    Robot.isExtended = !isExtended;
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(isExtended) {
+      Robot.hatchMechanism.retract();
+    } else {
+      Robot.hatchMechanism.extend();
+    }
   }
+
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

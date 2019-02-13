@@ -42,8 +42,8 @@ public class OI {
     bY = new JoystickButton(controller, 4);
     bLeftBumper = new JoystickButton(controller , 5);
     leftPaddle = new JoystickButton(controller, 9);
-    bA.whenPressed(new SolenoidExtend());
-    bB.whenPressed(new SolenoidRetract());
+
+    bA.whenPressed(new ToggleSolenoid());
     bX.whenPressed(new CargoTakeIn());
     bX.whenReleased(new CargoOff());
     bY.whenPressed(new CargoShoot());

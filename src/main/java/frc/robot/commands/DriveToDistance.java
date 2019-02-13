@@ -33,7 +33,7 @@ public class DriveToDistance extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.isForward ? Robot.lineSensors.getCargoSensor() : Robot.lineSensors.getHatchSensor();
+    return Robot.isForward ? !Robot.lineSensors.getHatchSensor() : !Robot.lineSensors.getCargoSensor();
   }
 
   // Called once after isFinished returns true

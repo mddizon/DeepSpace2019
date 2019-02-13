@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
   public static LineSensors lineSensors;
   public static FlaccidWrist flaccidWrist;
   public static Compressor compressor;
+  public static boolean isExtended;
 
   public static boolean isForward; //true is facing cargo
 
@@ -55,6 +56,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     isForward = true;
+    isExtended = false;
+
     driveTrain = new DriveTrain();
     hatchMechanism = new HatchMechanism();
     cargoShooter = new CargoShooter();
