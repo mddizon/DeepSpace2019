@@ -29,17 +29,27 @@ public class OI {
   private XboxController controller;
   private Button bA;
   private Button bB;
-  private Button bC;
+  private Button bX;
+  private Button bY;
+  private Button leftPaddle;
+  private Button bLeftBumper;
 
   public OI() {
     controller = new XboxController(0);
-    bA = new JoystickButton(controller, 0);
-    bB = new JoystickButton(controller, 1);
-    bC = new JoystickButton(controller, 2);
+    bA = new JoystickButton(controller, 1);
+    bB = new JoystickButton(controller, 2);
+    bX = new JoystickButton(controller, 3);
+    bY = new JoystickButton(controller, 4);
+    bLeftBumper = new JoystickButton(controller , 5);
+    leftPaddle = new JoystickButton(controller, 9);
     bA.whenPressed(new SolenoidExtend());
     bB.whenPressed(new SolenoidRetract());
-    bC.whenPressed(new CargoTakeIn());
-    bC.whenReleased(new CargoOff());
+    bX.whenPressed(new CargoTakeIn());
+    bX.whenReleased(new CargoOff());
+    bY.whenPressed(new CargoShoot());
+    bY.whenReleased(new CargoOff());
+    bLeftBumper.whenPressed(new DriveToDistance());
+    leftPaddle.whenPressed(new SwitchDirection());
   }
 
   public XboxController getController() {

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveCommand;
 
@@ -30,16 +31,16 @@ public class DriveTrain extends Subsystem {
 
   private WPI_VictorSPX frontLeftVictor;
   private WPI_VictorSPX backLeftVictor;
-  private Victor frontRightVictor;
-  private Victor backRightVictor;
+  private WPI_VictorSPX frontRightVictor;
+  private WPI_VictorSPX backRightVictor;
   private MecanumDrive drive;
   private AHRS gyro;
 
   public DriveTrain() {
     frontLeftVictor = new WPI_VictorSPX(RobotMap.frontLeftMotor);
     backLeftVictor = new WPI_VictorSPX(RobotMap.backLeftMotor);
-    frontRightVictor = new Victor(RobotMap.frontRightMotor);
-    backRightVictor = new Victor(RobotMap.backRightMotor);
+    backRightVictor = new WPI_VictorSPX(RobotMap.backRightMotor);
+    frontRightVictor = new WPI_VictorSPX(RobotMap.frontRightMotor);
     gyro = new AHRS(Port.kUSB);
     drive = new MecanumDrive(frontLeftVictor, backLeftVictor, frontRightVictor, backRightVictor);
     drive.setDeadband(0.1);
@@ -53,11 +54,17 @@ public class DriveTrain extends Subsystem {
     if (controller.getAButton()) {
       gyro.reset();
     }
-    if(controller.getBButton()) {
+    if (controller.getBButton()) {
       SmartDashboard.putString("lkhfalhflhkahjlasflhlhkaflhkaklaskjlfasklasfljk", "bjaskjasjhlasdlhjdsajhashjkhaksjuiqiuqkhebnbn");
     }
-    drive.driveCartesian(controller.getX(Hand.kLeft), -controller.getY(Hand.kLeft), controller.getX(Hand.kRight), gyro.getAngle());
+    if (Robot.isForward) {
+      drive.driveCartesian(controller.getX(Hand.kLeft), -controller.getY(Hand.kLeft), controller.getX(Hand.kRight), gyro.getAngle());
+    } else {
+      drive.driveCartesian(-controller.getX(Hand.kLeft), +controller.getY(Hand.kLeft), controller.getX(Hand.kRight), gyro.getAngle());    
+      //switches the front side of the robot
+    }
   }
+
 
   public double decimalPlace(double num, int place) {
     return (((double)((int)(num*place)))/place);
@@ -65,6 +72,22 @@ public class DriveTrain extends Subsystem {
 
   public void stop() {
     drive.stopMotor();
+  }
+
+  public void forward() {
+    if (Robot.isForward) {
+      drive.driveCartesian(1, 0, 0);
+    } else {
+      drive.driveCartesian(-1, 0, 0);
+    }
+  }
+
+  public void backward() {
+     if (Robot.isForward) {
+      drive.driveCartesian(1, 0, 0);
+    } else { 
+      drive.driveCartesian(-1, 0, 0);
+    }
   }
 
   @Override

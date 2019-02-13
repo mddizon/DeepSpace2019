@@ -10,11 +10,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class CargoShoot extends Command {
-  public CargoShoot() {
+public class FlaccidWristMove extends Command {
+  public FlaccidWristMove() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.cargoShooter);
+    requires(Robot.flaccidWrist);
   }
 
   // Called just before this Command runs the first time
@@ -25,7 +25,7 @@ public class CargoShoot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cargoShooter.shoot();
+    Robot.flaccidWrist.move(Robot.m_oi.getController());
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -37,13 +37,11 @@ public class CargoShoot extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.cargoShooter.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.cargoShooter.stop();
   }
 }

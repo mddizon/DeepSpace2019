@@ -7,6 +7,14 @@
 
 package frc.robot;
 
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -14,7 +22,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.CargoShooter;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.FlaccidWrist;
 import frc.robot.subsystems.HatchMechanism;
+import frc.robot.subsystems.LineSensors;
+import frc.robot.subsystems.Wrist;
 
 
 /**
@@ -29,9 +40,13 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
   public static HatchMechanism hatchMechanism;
   public static CargoShooter cargoShooter;
+  public static Wrist wrist;
+  public static LineSensors lineSensors;
+  public static FlaccidWrist flaccidWrist;
+  public static Compressor compressor;
 
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  public static boolean isForward; //true is facing cargo
+
 
   /**
    * This function is run when the robot is first started up and should be
@@ -39,13 +54,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    isForward = true;
     driveTrain = new DriveTrain();
     hatchMechanism = new HatchMechanism();
     cargoShooter = new CargoShooter();
+    wrist = new Wrist();
+    lineSensors = new LineSensors();
+    flaccidWrist = new FlaccidWrist();
+    compressor = new Compressor(0);
+    
 
     m_oi = new OI();
-    SmartDashboard.putString("Test", "Hello!");
-    SmartDashboard.putData("Auto mode", m_chooser);
+
+    SmartDashboard.putString("Direction", Robot.isForward ? "Facing Cargo" : "Facing Hatch");
+    
+    CameraServer.getInstance().startAutomaticCapture(0);
   }
 
   /**
@@ -58,6 +81,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    compressor.setClosedLoopControl(true);
   }
 
   /**
@@ -87,7 +111,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -97,9 +120,7 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
+
   }
 
   /**
@@ -116,9 +137,6 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
   }
 
   /**
@@ -126,7 +144,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    lineSensors.display();
     Scheduler.getInstance().run();
+
   }
 
   /**
