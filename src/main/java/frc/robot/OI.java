@@ -33,23 +33,38 @@ public class OI {
   private Button bY;
   private Button leftPaddle;
   private Button bLeftBumper;
+  private Button bRightBumper;
+  private Button rightPaddle;
+
+  public static final int buttonA = 1;
+  public static final int buttonB = 2;
+  public static final int buttonX = 3;
+  public static final int buttonY = 4;
+  public static final int buttonLeftBumper = 5;
+  public static final int buttonRightBumper = 6;
+  public static final int buttonLeftPaddle = 9;
 
   public OI() {
     controller = new XboxController(0);
-    bA = new JoystickButton(controller, 1);
-    bB = new JoystickButton(controller, 2);
-    bX = new JoystickButton(controller, 3);
-    bY = new JoystickButton(controller, 4);
-    bLeftBumper = new JoystickButton(controller , 5);
-    leftPaddle = new JoystickButton(controller, 9);
+    bA = new JoystickButton(controller, buttonA);
+    bB = new JoystickButton(controller, buttonB);
+    bX = new JoystickButton(controller, buttonX);
+    bY = new JoystickButton(controller, buttonY);
+    bLeftBumper = new JoystickButton(controller , buttonLeftBumper);
+    bRightBumper = new JoystickButton(controller , buttonRightBumper);
+    leftPaddle = new JoystickButton(controller, buttonLeftPaddle);
 
-    bA.whenPressed(new ToggleSolenoid());
-    bX.whenPressed(new CargoTakeIn());
-    bX.whenReleased(new CargoOff());
-    bY.whenPressed(new CargoShoot());
-    bY.whenReleased(new CargoOff());
-    bLeftBumper.whenPressed(new DriveToDistance());
-    leftPaddle.whenPressed(new SwitchDirection());
+    bY.whenPressed(new Align0());
+    bX.whenPressed(new Align270());
+    bB.whenPressed(new Align90());
+    bA.whenPressed(new SwitchDirection());
+    
+    bRightBumper.whenPressed(new CargoShoot());
+    bRightBumper.whenReleased(new CargoOff());
+    bLeftBumper.whenPressed(new CargoTakeIn());
+    bLeftBumper.whenReleased(new CargoOff());
+    
+    leftPaddle.whenPressed(new ToggleSolenoid());
   }
 
   public XboxController getController() {

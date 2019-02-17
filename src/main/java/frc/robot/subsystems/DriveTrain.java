@@ -10,12 +10,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -36,6 +38,9 @@ public class DriveTrain extends Subsystem {
   private MecanumDrive drive;
   private AHRS gyro;
 
+  //TESTING
+  private Potentiometer potent;
+
   public DriveTrain() {
     frontLeftVictor = new WPI_VictorSPX(RobotMap.frontLeftMotor);
     backLeftVictor = new WPI_VictorSPX(RobotMap.backLeftMotor);
@@ -44,6 +49,10 @@ public class DriveTrain extends Subsystem {
     gyro = new AHRS(Port.kUSB);
     drive = new MecanumDrive(frontLeftVictor, backLeftVictor, frontRightVictor, backRightVictor);
     drive.setDeadband(0.1);
+
+    //TESTING
+    potent = new AnalogPotentiometer(RobotMap.pot, 250, 0);
+
   }
   
   public void move(XboxController controller) {
@@ -51,6 +60,10 @@ public class DriveTrain extends Subsystem {
     SmartDashboard.putNumber("X", controller.getX(Hand.kLeft));
     SmartDashboard.putNumber("Y", controller.getY(Hand.kLeft));
     SmartDashboard.putNumber("Z", controller.getX(Hand.kRight));
+
+    //TEST
+    SmartDashboard.putNumber("Potentiometer", potent.get());
+
     if (controller.getAButton()) {
       gyro.reset();
     }
@@ -58,10 +71,12 @@ public class DriveTrain extends Subsystem {
       SmartDashboard.putString("lkhfalhflhkahjlasflhlhkaflhkaklaskjlfasklasfljk", "bjaskjasjhlasdlhjdsajhashjkhaksjuiqiuqkhebnbn");
     }
     if (Robot.isForward) {
+      // first way we drove drive.driveCartesian(controller.getX(Hand.kLeft), -controller.getY(Hand.kLeft), controller.getX(Hand.kRight), gyro.getAngle());
       drive.driveCartesian(controller.getX(Hand.kLeft), -controller.getY(Hand.kLeft), controller.getX(Hand.kRight), gyro.getAngle());
     } else {
-      drive.driveCartesian(-controller.getX(Hand.kLeft), +controller.getY(Hand.kLeft), controller.getX(Hand.kRight), gyro.getAngle());    
+      // first way we drove drive.driveCartesian(-controller.getX(Hand.kLeft), +controller.getY(Hand.kLeft), controller.getX(Hand.kRight), gyro.getAngle());    
       //switches the front side of the robot
+      drive.driveCartesian(-controller.getX(Hand.kLeft), controller.getY(Hand.kLeft), controller.getX(Hand.kRight), gyro.getAngle());
     }
   }
 
@@ -70,16 +85,28 @@ public class DriveTrain extends Subsystem {
     return (((double)((int)(num*place)))/place);
   }
 
+  public void reset() {
+    gyro.reset();
+  }
+
   public void stop() {
     drive.stopMotor();
   }
 
   public void forward() {
     if (Robot.isForward) {
-      drive.driveCartesian(1, 0, 0);
+      drive.driveCartesian(0, 1, 0);
     } else {
-      drive.driveCartesian(-1, 0, 0);
+      drive.driveCartesian(0, -1, 0);
     }
+  }
+
+  public void turnLeft(double turnSpeed) {
+    drive.driveCartesian(0, 0, turnSpeed);
+  }
+
+  public void turnRight(double turnSpeed) {
+    drive.driveCartesian(0, 0, -turnSpeed);
   }
 
   public void backward() {
@@ -88,6 +115,10 @@ public class DriveTrain extends Subsystem {
     } else { 
       drive.driveCartesian(-1, 0, 0);
     }
+  }
+
+  public AHRS getGyro(){
+    return gyro;
   }
 
   @Override

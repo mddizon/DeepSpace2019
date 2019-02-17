@@ -35,7 +35,7 @@ public class Wrist extends PIDSubsystem {
     // setSetpoint() - Sets where the PID controller should move the system
     // to
     // enable() - Enables the PID controller.
-    pot = new AnalogPotentiometer(RobotMap.pot, 270, 0);
+    pot = new AnalogPotentiometer(1, 250, 0);
     victor = new VictorSP(RobotMap.wrist);
     setAbsoluteTolerance(tolerance);
   }
