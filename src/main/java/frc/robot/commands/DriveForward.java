@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class DriveBackwards extends Command {
-  public DriveBackwards() {
+public class DriveForward extends Command {
+  public DriveForward() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.driveTrain);
@@ -27,7 +27,7 @@ public class DriveBackwards extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.backwardAtSpeed(RobotMap.slowDriveSpeed);
+    Robot.driveTrain.forwardAtSpeed(RobotMap.slowDriveSpeed);
   }
 
   // Make this return true when this Command no longer needs to run execute()

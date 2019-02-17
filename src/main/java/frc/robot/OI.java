@@ -54,7 +54,7 @@ public class OI {
     bRightBumper = new JoystickButton(controller , buttonRightBumper);
     leftPaddle = new JoystickButton(controller, buttonLeftPaddle);
 
-    bY.whenPressed(new Align0());
+    bY.whenPressed(new HatchPickup());
     bX.whenPressed(new Align270());
     bB.whenPressed(new Align90());
     bA.whenPressed(new SwitchDirection());
@@ -63,7 +63,7 @@ public class OI {
     bRightBumper.whenReleased(new CargoOff());
     bLeftBumper.whenPressed(new CargoTakeIn());
     bLeftBumper.whenReleased(new CargoOff());
-    
+
     leftPaddle.whenPressed(new ToggleSolenoid());
   }
 

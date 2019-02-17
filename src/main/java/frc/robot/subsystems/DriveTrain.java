@@ -101,6 +101,14 @@ public class DriveTrain extends Subsystem {
     }
   }
 
+  public void forwardAtSpeed(double speed) {
+    if (Robot.isForward) {
+      drive.driveCartesian(0, speed, 0);
+    } else {
+      drive.driveCartesian(0, -speed, 0);
+    }
+  }
+
   public void turnLeft(double turnSpeed) {
     drive.driveCartesian(0, 0, turnSpeed);
   }
@@ -116,6 +124,14 @@ public class DriveTrain extends Subsystem {
       drive.driveCartesian(-1, 0, 0);
     }
   }
+
+  public void backwardAtSpeed(double speed) {
+    if (Robot.isForward) {
+     drive.driveCartesian(0, -speed, 0); //the negative and positive signs may need to be changed depending on which way is forward and backwards
+   } else { 
+     drive.driveCartesian(0, speed, 0);
+   }
+ }
 
   public AHRS getGyro(){
     return gyro;

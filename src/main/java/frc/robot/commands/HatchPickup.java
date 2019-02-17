@@ -18,8 +18,12 @@ public class HatchPickup extends CommandGroup {
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
     // these will run in order.
-    addParallel(new DriveToDistance()); // we may have to change this command later
+    addSequential(new Align180());
+    addSequential(new DriveForward());
+    setTimeout(.5);
+    if(isTimedOut()){ // we may have to change this command later
     addSequential(new DriveBackwards());
+    }
     // To run multiple commands at the same time,
     // use addParallel()
     // e.g. addParallel(new Command1());

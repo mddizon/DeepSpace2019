@@ -43,6 +43,7 @@ public class RobotMap {
 
   public static final double fastTurnSpeed = .4;
   public static final double slowTurnSpeed = .2;
+  public static final double slowDriveSpeed = .25;
   // If you are using multiple modules, make sure to define both the port
   // number and the module. For example you with a rangefinder:
   // public static int rangefinderPort = 1;
